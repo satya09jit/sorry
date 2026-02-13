@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Just Me</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  color: #fff;
+}
+
+.wrapper {
+  text-align: center;
+}
+
+h1 {
+  font-size: 1.3rem;
+  margin-bottom: 14px;
+}
+
+.image-wrap {
+  display: inline-block;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.image-wrap img {
+  width: 100%;
+  max-width: 320px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.4);
+  user-select: none;
+  animation: fade 0.35s ease;
+}
+
+.hint {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+  <h1>❤️</h1>
+
+  <div class="image-wrap" id="tapArea">
+    <img id="img" alt="memory">
+  </div>
+
+  <div class="hint">Tap the image</div>
+</div>
+
+<script>
+/* ✅ LOCAL IMAGES (2, 3, ANY NUMBER — WORKS) */
+const images = [
+  "im/radha1.png",
+  "im/radha2.png",
+  "im/radha3.png",
+ 
+  // add more if you want
+];
+
+let index = 0;
+const img = document.getElementById("img");
+const tapArea = document.getElementById("tapArea");
+
+/* 🔥 SET FIRST IMAGE FROM ARRAY (IMPORTANT) */
+img.src = images[index];
+
+tapArea.addEventListener("click", () => {
+  // move to next image
+  index = (index + 1) % images.length;
+  img.src = images[index];
+
+  // restart animation
+  img.style.animation = "none";
+  img.offsetHeight;
+  img.style.animation = "fade 0.35s ease";
+});
+</script>
+
+</body>
+</html>

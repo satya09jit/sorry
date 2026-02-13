@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Difficult Question</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#2c3e50,#4b79a1);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:16px;
+  transition:1s;
+}
+
+body.resolve{
+  background:linear-gradient(135deg,#667db6,#0082c8);
+}
+
+.container{
+  background:#fff;
+  padding:28px 22px;
+  border-radius:22px;
+  text-align:center;
+  max-width:420px;
+  width:100%;
+  box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.container.hide{
+  opacity:0;
+  transform:scale(.9);
+  pointer-events:none;
+}
+
+.icon{font-size:48px;margin-bottom:12px}
+
+h1{font-size:1.4rem;color:#34495e;margin-bottom:12px}
+
+.message{
+  font-size:.95rem;
+  color:#555;
+  margin-bottom:28px;
+  min-height:42px;
+}
+
+.buttons{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+button{
+  padding:14px;
+  border-radius:999px;
+  border:none;
+  font-size:1rem;
+  font-weight:bold;
+  box-shadow:0 6px 14px rgba(0,0,0,.18);
+}
+
+#noBtn{background:#3498db;color:#fff}
+#yesBtn{background:#e0e0e0;color:#555;cursor:default}
+
+#yesBtn.floating{
+  position:fixed;
+  z-index:999;
+}
+
+.result{
+  position:fixed;
+  inset:0;
+  padding:24px;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.8s;
+}
+
+.result.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.result h1{font-size:1.6rem;margin-bottom:16px}
+.result p{font-size:.95rem;line-height:1.6}
+
+.see-btn{
+  margin-top:20px;
+  padding:12px 22px;
+  border-radius:999px;
+  border:none;
+  background:#fff;
+  color:#2c3e50;
+  font-size:.9rem;
+  font-weight:600;
+  cursor:pointer;
+}
+
+@media(min-width:768px){
+  .buttons{flex-direction:row}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="box">
+  <div class="icon">😔</div>
+  <h1>Do you really hate me?</h1>
+  <p class="message" id="msg">I keep thinking about what I did wrong…</p>
+
+  <div class="buttons">
+    <button id="noBtn">No</button>
+    <button id="yesBtn">Yes</button>
+  </div>
+</div>
+
+<div class="result" id="result">
+  <h1>Thank you for not hating me 😢</h1>
+  <p>
+    I know I messed up.<br><br>
+    I don’t expect everything to be okay instantly,
+    but knowing you don’t hate me means more than you know.
+  </p>
+
+  <!-- REAL REDIRECT -->
+  <button class="see-btn" onclick="goGallery()">See me</button>
+</div>
+
+<script>
+const messages=[
+  "I replay everything again and again…",
+  "I never meant to hurt you 🥺",
+  "I wish I could undo that moment…",
+  "You didn’t deserve that from me."
+];
+
+let i=0,yesMoves=0;
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const msg=document.getElementById("msg");
+const box=document.getElementById("box");
+const result=document.getElementById("result");
+
+function moveYes(){
+  yesMoves++;
+  if(yesMoves===1) yesBtn.classList.add("floating");
+  yesBtn.style.left=Math.random()*70+"vw";
+  yesBtn.style.top=Math.random()*70+"vh";
+  i=(i+1)%messages.length;
+  msg.textContent=messages[i];
+}
+
+yesBtn.addEventListener("mouseenter",moveYes);
+
+noBtn.addEventListener("click",()=>{
+  box.classList.add("hide");
+  document.body.classList.add("resolve");
+  setTimeout(()=>result.classList.add("show"),500);
+});
+
+function goGallery(){
+  window.location.href="gallery.html";
+}
+</script>
+
+</body>
+</html>
