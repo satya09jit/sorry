@@ -21,10 +21,14 @@ body {
   align-items: center;
   padding: 16px;
   color: #fff;
+  overflow: hidden;
 }
 
+/* keep content above rain */
 .wrapper {
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 h1 {
@@ -57,11 +61,53 @@ h1 {
   from { opacity: 0; transform: scale(0.96); }
   to   { opacity: 1; transform: scale(1); }
 }
+
+/* SORRY RAIN */
+#sorryRain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999; /* 🔥 HIGH – ABOVE IMAGE */
+}
+
+/* image stays below */
+.wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.sorry-letter,
+.sorry-emoji {
+  position: absolute;
+  top: -40px;
+  opacity: 0.8;
+  animation: fall linear forwards;
+}
+
+.sorry-letter {
+  font-size: 22px;
+}
+
+.sorry-emoji {
+  font-size: 26px;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
+}
 </style>
 </head>
 
 <body>
 
+<!-- RAIN LAYER -->
+<div id="sorryRain"></div>
+
+<!-- CONTENT -->
 <div class="wrapper">
   <h1>❤️</h1>
 
@@ -69,38 +115,69 @@ h1 {
     <img id="img" alt="memory">
   </div>
 
-  <div class="hint">Tap the image</div>
+  <div class="hint">Click on the image</div>
 </div>
 
 <script>
-/* ✅ LOCAL IMAGES (2, 3, ANY NUMBER — WORKS) */
+/* 🔁 IMAGE LOOP (SAME FOLDER) */
 const images = [
   "radha1.png",
   "radha2.png",
-  "radha3.png",
- 
-  // add more if you want
+  "radha3.png"
 ];
 
 let index = 0;
 const img = document.getElementById("img");
 const tapArea = document.getElementById("tapArea");
 
-/* 🔥 SET FIRST IMAGE FROM ARRAY (IMPORTANT) */
+/* set first image */
 img.src = images[index];
 
+/* tap to loop */
 tapArea.addEventListener("click", () => {
-  // move to next image
   index = (index + 1) % images.length;
   img.src = images[index];
 
-  // restart animation
+  // restart fade animation
   img.style.animation = "none";
   img.offsetHeight;
   img.style.animation = "fade 0.35s ease";
 });
+
+/* SORRY RAIN */
+const sorryLetters = [ "🌼", "🌸", "🌺", "🌻", "🌷", "🪻", "💐", "🍀", "🌿" ];
+const sorryEmojis = [
+  "🌼", "🌸", "🌺", "🌻", "🌷", "🪻", "💐", "🍀", "🌿"
+];
+
+const rainBox = document.getElementById("sorryRain");
+
+function createSorryLetter() {
+  const el = document.createElement("div");
+  el.className = "sorry-letter";
+  el.textContent = sorryLetters[Math.floor(Math.random() * sorryLetters.length)];
+  el.style.left = Math.random() * 100 + "vw";
+  el.style.animationDuration = (Math.random() * 3 + 3) + "s";
+
+  rainBox.appendChild(el);
+  setTimeout(() => el.remove(), 7000);
+}
+
+function createSorryEmoji() {
+  const el = document.createElement("div");
+  el.className = "sorry-emoji";
+  el.textContent = sorryEmojis[Math.floor(Math.random() * sorryEmojis.length)];
+  el.style.left = Math.random() * 100 + "vw";
+  el.style.animationDuration = (Math.random() * 3 + 3) + "s";
+
+  rainBox.appendChild(el);
+  setTimeout(() => el.remove(), 7000);
+}
+
+/* start rain */
+setInterval(createSorryLetter, 600);
+setInterval(createSorryEmoji, 1000);
 </script>
 
 </body>
-
 </html>
